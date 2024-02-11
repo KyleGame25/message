@@ -89,7 +89,7 @@ id("image_send").addEventListener("click", function(){
 			content: message
 		})
 		
-		waitTime += 10000
+		waitTime += 3000
 		id("message_input").innerHTML = ''
 	})
 })
@@ -152,6 +152,8 @@ messages.on("child_added", function(messageResult){
 	if (messageResult.val().user === auth.getUid()) return
 	playNotification()
 	
+	if (id("messages").scrollTopMax - id("messages").scrollTop > 500) id("messages").scrollTop = 0x7FFFFFFF
+	
 	if (!document.hasFocus()) notifications++
 })
 
@@ -185,8 +187,10 @@ setInterval(function(){
 		cursor: not-allowed;`
 	}
 	
+	if (document.hasFocus()) notifications = 0
+	
 	if (notifications === 0) document.title = "KG25 Messages!"
-	else document.title = "(" + notifications + ")KG25 Messages!"
+	else document.title = "(" + notifications + ") KG25 Messages!"
 	
 	id("messages").style.bottom = (id("message_input").clientHeight + 32) + "px"
 })
