@@ -152,7 +152,7 @@ messages.on("child_added", function(messageResult){
 	if (messageResult.val().user === auth.getUid()) return
 	playNotification()
 	
-	if (id("messages").scrollTopMax - id("messages").scrollTop > 500) id("messages").scrollTop = 0x7FFFFFFF
+	if (id("messages").scrollTopMax - id("messages").scrollTop < 500) id("messages").scrollTop = 0x7FFFFFFF
 	
 	if (!document.hasFocus()) notifications++
 })
