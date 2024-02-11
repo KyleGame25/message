@@ -149,7 +149,9 @@ messages.on("value", function(messageResult){
 messages.on("child_added", function(messageResult){
 	isAuth()
 	
-	if (id("messages").scrollTopMax - id("messages").scrollTop < 500) id("messages").scrollTop = 0x7FFFFFFF
+	setTimeout(function(){
+		if (id("messages").scrollTopMax - id("messages").scrollTop < 500) id("messages").scrollTop = 0x7FFFFFFF
+	})
 	
 	if (messageResult.val().user === auth.getUid()) return
 	playNotification()
