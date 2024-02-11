@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
+		<style>
+			* {
+				font-size: 40px;
+				font-family: sans-serif;
+				color: #00241B;
+			}
+			
+			::selection {
+				background-color: #00241B;
+				color: #B5FFE1;
+			}
+			
+			body {
+				background-color: #B5FFE1;
+				margin: 0;
+			}
+			
+			.signinbutton {
+				transition-duration: 0.2s;
+				background-color: #93E5AB;
+				border: 0.1rem solid #65B891;
+				border-radius: 0.2rem;
+				color: #00241B;
+				box-shadow: #65B891 0 0.15rem;
+				cursor: pointer;
+			}
+			
+			.signinbutton:hover {
+				transform: translateY(0.15rem);
+				background-color: #65B891;
+				color: #B5FFE1;
+				box-shadow: #65B891 0 0;
+			}
+			
+			.signininput {
+				background-color: #93E5AB;
+				border: 0.1rem solid #65B891;
+				border-radius: 0.2rem;
+				margin: 0.1rem;
+				padding: 0.1rem;
+				text-align: center;
+			}
+			
+			#signinresult {
+				background-color: #93E5AB;
+				border: 0.2rem solid #93E5AB;
+				border-radius: 0.2rem;
+			}
+			
+			#split {
+				margin-left: 1rem;
+				margin-right: 1rem;
+			}
+			
+			#welcome, #signinbuttons, #login {
+				text-align: center;
+			}
+		</style>
+		<title>KG25 Messages!</title>
+		<script defer src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+		<script defer src="script.js"></script>
+	</head>
+	<body>
+		<div id="welcome">
+			<b>Welcome to KG25 Messages!</b><br>
+			<span>Login first, or create an account!</span><br><br>
+		</div>
+		<div id="login" style="display:none">
+			<br>
+			<span id="signinresult" style="display:none"></span><br><br>
+			<input class="signininput" id="sign_in_username" placeholder="Username"></input><br>
+			<input class="signininput" id="sign_in_email" type="email" placeholder="E-mail"></input><br>
+			<input class="signininput" id="sign_in_password" type="password" placeholder="Password"></input>
+		</div>
+		<div id="signinbuttons">
+			<button class="signinbutton" id="createAccount">Create</button>
+			<span id="split"></span>
+			<button class="signinbutton" id="loginAccount">Login</button>
+		</div>
+	</body>
+</html>

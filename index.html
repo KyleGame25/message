@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
+		<style>
+			* {
+				font-size: 40px;
+				font-family: sans-serif;
+				color: #00241B;
+			}
+			
+			::selection {
+				background-color: #00241B;
+				color: #B5FFE1;
+			}
+			
+			html {
+				width: 100%;
+				height: 100%;
+			}
+			
+			body {
+				transition-duration: 0.2s;
+				background-color: #B5FFE1;
+				margin: 0;
+				width: 100%;
+				height: 98%;
+			}
+			
+			.button {
+				transition-duration: 0.2s;
+				background-color: #93E5AB;
+				border: 0.1rem solid #65B891;
+				border-radius: 0.2rem;
+				color: #00241B;
+				box-shadow: #65B891 0 0.15rem;
+				cursor: pointer;
+			}
+			
+			.button:hover {
+				transform: translateY(0.15rem);
+				background-color: #65B891;
+				color: #B5FFE1;
+				box-shadow: #65B891 0 0;
+			}
+			
+			#message_input {
+				background-color: #B5FFE1;
+				border: 0.1rem solid #65B891;
+				border-radius: 0.2rem;
+				margin: 0.1rem;
+				padding: 0.1rem;
+				width: calc(100vw - 3.8rem);
+				float: left;
+				overflow-x: scroll;
+			}
+			
+			#message_send, #image_send {
+				padding: 0.1rem;
+				width: 1rem;
+				height: 1rem;
+				margin-left: 0.1rem;
+				float: left;
+			}
+			
+			#message_box {
+				position: absolute;
+				bottom: 0
+			}
+			
+			#messages {
+				position: absolute;
+				left: 0.2rem;
+				right: 0.2rem;
+				top: 0;
+				overflow-y: scroll;
+				overflow-x: hidden;
+			}
+		</style>
+		<title>KG25 Messages!</title>
+		<script defer src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+		<script defer src="script.js"></script>
+	</head>
+	<body style="filter:blur(8px);pointer-events:none">
+		<div id="messages"></div>
+		<div id="message_box">
+			<div contenteditable="" id="message_input"></div>
+			<img id="image_send" class="button" src="https://cdn-icons-png.flaticon.com/512/16/16410.png"></img>
+			<img id="message_send" class="button" src="https://cdn-icons-png.flaticon.com/512/9333/9333991.png"></img>
+		</div>
+	</body>
+</html>
