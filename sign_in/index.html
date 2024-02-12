@@ -6,7 +6,7 @@
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
 		<style>
 			* {
-				font-size: 40px;
+				font-size: min(6vw, 6vh);
 				font-family: sans-serif;
 				color: #00241B;
 			}
@@ -21,7 +21,7 @@
 				margin: 0;
 			}
 			
-			.signinbutton {
+			button {
 				transition-duration: 0.2s;
 				background-color: #93E5AB;
 				border: 0.1rem solid #65B891;
@@ -31,14 +31,14 @@
 				cursor: pointer;
 			}
 			
-			.signinbutton:hover {
+			button:hover {
 				transform: translateY(0.15rem);
 				background-color: #65B891;
 				color: #B5FFE1;
 				box-shadow: #65B891 0 0;
 			}
 			
-			.signininput {
+			input {
 				background-color: #93E5AB;
 				border: 0.1rem solid #65B891;
 				border-radius: 0.2rem;
@@ -47,7 +47,7 @@
 				text-align: center;
 			}
 			
-			#signinresult {
+			#result {
 				background-color: #93E5AB;
 				border: 0.2rem solid #93E5AB;
 				border-radius: 0.2rem;
@@ -73,15 +73,15 @@
 		</div>
 		<div id="login" style="display:none">
 			<br>
-			<span id="signinresult" style="display:none"></span><br><br>
-			<input class="signininput" id="sign_in_username" placeholder="Username"></input><br>
-			<input class="signininput" id="sign_in_email" type="email" placeholder="E-mail"></input><br>
-			<input class="signininput" id="sign_in_password" type="password" placeholder="Password"></input>
+			<span id="result" style="display:none"></span><br><br>
+			<input id="username" placeholder="Username"></input><br>
+			<input id="email" type="email" placeholder="E-mail"></input><br>
+			<input id="password" type="password" placeholder="Password"></input>
 		</div>
 		<div id="signinbuttons">
-			<button class="signinbutton" id="createAccount">Create</button>
+			<button id="createAccount">Create</button>
 			<span id="split"></span>
-			<button class="signinbutton" id="loginAccount">Login</button>
+			<button id="loginAccount">Login</button>
 		</div>
 	</body>
 </html>

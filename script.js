@@ -47,19 +47,8 @@ const screen = {
 }
 
 const getMessage = function(){
-	let message = id("message_input").innerHTML
-	message = message.replaceAll("</div><div>", "\n")
+	let message = id("message_input").value
 	
-	let div = document.createElement("div")
-	div.style.display = "none"
-	div.innerHTML = message
-	
-	document.body.appendChild(div)
-	message = div.innerText
-	
-	div.remove()
-	
-	message = message.replaceAll(/\n+/g, "\n")
 	message = message.replaceAll("\u202e", '')
 	
 	if (message[0] === "\n") message = message.substr(1)
@@ -79,8 +68,10 @@ id("image_send").addEventListener("click", function(){
 		return
 	}
 	
-	fetch(url).then(response => {
-		if (response.status > 399) return
+	fetch(url).then(
+		response => response.status > 399 ? response.blob() : null
+	).then(response => {
+		if (response === undefined || response.type.substr(0, 5) === "image") return
 		
 		messages.push({
 			user: auth.getUid(),
@@ -90,7 +81,7 @@ id("image_send").addEventListener("click", function(){
 		})
 		
 		waitTime += 3000
-		id("message_input").innerHTML = ''
+		id("message_input").value = ''
 	})
 })
 
@@ -100,12 +91,16 @@ id("message_send").addEventListener("click", function(){
 	messages.push({
 		user: auth.getUid(),
 		time: Date.now(),
-		type: "message",
+		type: "text",
 		content: getMessage()
 	})
 	
 	waitTime += 2000
-	id("message_input").innerHTML = ''
+	id("message_input").value = ''
+})
+
+id("options").addEventListener("click", function(){
+	window.open("profile", "_self")
 })
 
 messages.on("value", function(messageResult){
@@ -128,9 +123,9 @@ messages.on("value", function(messageResult){
 		if (username === undefined) username = "???"
 		
 		if (message.type === "image") {
-			let img = new Image(256)
+			let img = new Image()
 			img.src = message.content
-			img.style = "border: 0.1rem solid #65B891; border-radius: 0.1rem; cursor: alias"
+			img.style = "border: 0.1rem solid #65B891; border-radius: 0.1rem; cursor: alias; width: 16rem"
 			img.loading = "lazy"
 			
 			img.addEventListener("click", () => window.open(message.content))
@@ -138,7 +133,7 @@ messages.on("value", function(messageResult){
 			div.innerText = username + ": "
 			div.appendChild(img)
 			div.appendChild(document.createElement("br"))
-		} else {
+		} else if (message.type === "text") {
 			div.innerText = username + ": " + message.content + "\n"
 		}
 		
@@ -157,6 +152,42 @@ messages.on("child_added", function(messageResult){
 	if (!document.hasFocus()) notifications++
 })
 
+let previousInput = undefined
+
+const updateSendIcons = function(){
+	let message = getMessage()
+	
+	if (message.length > 0 && message.length <= 200 && waitTime === 0) id("message_send").style = ''
+	else fail("message_send")
+	
+	try {
+		let url = new URL(message)
+		if (message.length > 200 || waitTime !== 0) throw Error()
+		
+		fetch(url).then(response => {
+			if (response.status < 400) return response.blob()
+			fail("image_send")
+		}).then(response => {
+			if (response === undefined || response.type.substr(0, 5) !== "image") return fail("image_send")
+			id("image_send").style = ''
+			previousInput = message
+		})
+	} catch (e) {
+		fail("image_send")
+	}
+	
+	function fail(elm){
+		previousInput = message
+		
+		id(elm).style = `
+		background-color: #e59393;
+		border-color: #b86565;
+		box-shadow: #b86565 0 0.15rem;
+		transform: translateY(0rem);
+		cursor: not-allowed;`
+	}
+}
+
 setInterval(function(){
 	let diff = Date.now() - lastTick
 	lastTick = Date.now()
@@ -164,35 +195,17 @@ setInterval(function(){
 	if (waitTime > 0) waitTime -= diff
 	if (waitTime < 0) waitTime = 0
 	
-	let message = getMessage()
-	
-	if (message.length > 0 && message.length <= 200 && waitTime === 0) id("message_send").style = ''
-	else id("message_send").style = `
-		background-color: #e59393;
-		border-color: #b86565;
-		box-shadow: #b86565 0 0.15rem;
-		transform: translateY(0rem);
-		cursor: not-allowed;`
-	
-	try {
-		new URL(message)
-		if (message.length > 200 || waitTime !== 0) throw Error()
-		id("image_send").style = ''
-	} catch (e) {
-		id("image_send").style = `
-		background-color: #e59393;
-		border-color: #b86565;
-		box-shadow: #b86565 0 0.15rem;
-		transform: translateY(0rem);
-		cursor: not-allowed;`
-	}
-	
 	if (document.hasFocus()) notifications = 0
 	
 	if (notifications === 0) document.title = "KG25 Messages!"
+	else if (auth.getUid() === null) document.title = "KG25 Messages!"
 	else document.title = "(" + notifications + ") KG25 Messages!"
 	
 	id("messages").style.bottom = (id("message_input").clientHeight + 32) + "px"
 })
+
+setInterval(function(){
+	if (previousInput !== getMessage()) updateSendIcons()
+}, 1000)
 
 //}()

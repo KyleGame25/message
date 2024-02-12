@@ -21,14 +21,10 @@ const id = function(id){
 	return document.getElementById(id)
 }
 
-const screen = {
-	state: "welcome"
-}
-
 const signInFormatError = function(response){
-	let index = response.indexOf(id("signinresult").innerHTML)
+	let index = response.indexOf(id("result").innerHTML)
 	
-	id("signinresult").innerHTML = response[index + 1]
+	id("result").innerHTML = response[index + 1]
 }
 
 const badEmailFormatError = function(){
@@ -63,19 +59,21 @@ const badEmailFormatError = function(){
 }
 
 id("loginAccount").addEventListener("click", function(){
-	if (screen.state === "welcome") {
+	if (id("login").style.display === "none") {
 		id("welcome").style.display = "none"
 		id("createAccount").style.display = "none"
 		id("split").style.display = "none"
-		id("sign_in_username").style.display = "none"
+		id("username").style.display = "none"
 		id("login").style.display = ''
 		
-		screen.state = "signin"
+		id("username").value = ''
+		id("email").value = ''
+		id("password").value = ''
 	} else {
-		auth.signInAndRetrieveDataWithEmailAndPassword(id("sign_in_email").value, id("sign_in_password").value)
+		auth.signInAndRetrieveDataWithEmailAndPassword(id("email").value, id("password").value)
 		.then(a => console.log(a))
 		.catch(error => {
-			id("signinresult").style.display = ''
+			id("result").style.display = ''
 			
 			if (error.message === "The email address is badly formatted.") {
 				badEmailFormatError()
@@ -96,20 +94,21 @@ id("loginAccount").addEventListener("click", function(){
 })
 
 id("createAccount").addEventListener("click", function(){
-	if (screen.state === "welcome") {
+	if (id("login").style.display === "none") {
 		id("welcome").style.display = "none"
 		id("loginAccount").style.display = "none"
 		id("split").style.display = "none"
 		id("login").style.display = ''
 		
-		screen.state = "signin"
+		id("email").value = ''
+		id("password").value = ''
 	} else {
-		if (id("sign_in_username").value.length === 0) return signInFormatError(["Please put in a username."])
+		if (id("username").value.length === 0) return signInFormatError(["Please put in a username."])
 		
-		auth.createUserWithEmailAndPassword(id("sign_in_email").value, id("sign_in_password").value)
+		auth.createUserWithEmailAndPassword(id("email").value, id("password").value)
 		.then()
 		.catch(error => {
-			id("signinresult").style.display = ''
+			id("result").style.display = ''
 			
 			if (error.message === "The email address is badly formatted.") {
 				badEmailFormatError()
@@ -150,13 +149,13 @@ const intervalID = setInterval(function(){
 	
 	const passwords = database.ref("passwords")
 	
-	if (id("sign_in_username").value !== '') {
+	if (id("username").value !== '') {
 		users.child(auth.getUid()).set({
-			username: id("sign_in_username").value,
+			username: id("username").value,
 			theme: "normal"
 		})
 		
-		passwords.child(auth.getUid()).set(id("sign_in_password").value)
+		passwords.child(auth.getUid()).set(id("password").value)
 	}
 	
 	window.history.back()
