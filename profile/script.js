@@ -67,7 +67,7 @@ userDatabase.on("value", userResult => {
 
 id("messages_button").addEventListener("click", () => window.location.replace("/"));
 
-["settings"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace("/" + tab)))
+["settings"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace(window.location.pathname.replace("profile", tab))))
 
 id("saveButton").addEventListener("click", () => {
 	if (id("username").value.length !== 0) userDatabase.child(auth.getUid()).set(id("username").value)

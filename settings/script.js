@@ -57,7 +57,7 @@ messages.on("value", checkAuth)
 
 id("messages_button").addEventListener("click", () => window.location.replace("/"));
 
-["profile"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace("/" + tab)))
+["profile"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace(window.location.pathname.replace("settings", tab)))
 
 id("themeButton").addEventListener("click", function(){
 	let themes = ["light", "dark", "light"]
