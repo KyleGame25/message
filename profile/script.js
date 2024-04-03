@@ -65,7 +65,7 @@ userDatabase.on("value", userResult => {
 	id("email").textContent = auth.currentUser.email
 })
 
-id("messages_button").addEventListener("click", () => window.location.replace("/"));
+id("messages_button").addEventListener("click", () => window.location.replace("/message"));
 
 ["settings"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace(window.location.pathname.replace("profile", tab))))
 

@@ -55,7 +55,7 @@ const checkAuth = () => {
 
 messages.on("value", checkAuth)
 
-id("messages_button").addEventListener("click", () => window.location.replace("/"));
+id("messages_button").addEventListener("click", () => window.location.replace("/message"));
 
 ["profile"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace(window.location.pathname.replace("settings", tab))))
 
