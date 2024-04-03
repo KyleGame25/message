@@ -16,7 +16,6 @@ const auth = firebase.auth()
 
 const database = firebase.database()
 const messages = database.ref("messages")
-const userDatabase = database.ref("usernames")
 const settings = database.ref("settings")
 
 const id = id => document.getElementById(id)
@@ -39,9 +38,9 @@ const setTheme = theme => {
 
 if (sessionStorage.getItem("theme") !== null) setTheme(sessionStorage.getItem("theme"))
 
-const checkAuth = function(){
-	if (auth.currentUser === null) return window.location.replace("sign_in")
-	id("profile_buttons").style = ''
+const checkAuth = () => {
+	if (auth.currentUser === null) return window.location.replace(location.href.replace("profile", '') + "sign_in")
+	id("settings").style = ''
 	id("loading").remove()
 	messages.off("value", checkAuth)
 	
@@ -56,40 +55,42 @@ const checkAuth = function(){
 
 messages.on("value", checkAuth)
 
-userDatabase.on("value", userResult => {
-	let username = userResult.val()[auth.getUid()]
-	
-	id("username").removeAttribute("disabled")
-	id("username").value = username
-	id("options").style = ''
-	id("email").textContent = auth.currentUser.email
-})
-
 id("messages_button").addEventListener("click", () => window.location.replace("/"));
 
-["settings"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace("/" + tab)))
+["profile"].forEach(tab => id(tab + "_button").addEventListener("click", () => window.location.replace("/" + tab)))
 
-id("saveButton").addEventListener("click", () => {
-	if (id("username").value.length !== 0) userDatabase.child(auth.getUid()).set(id("username").value)
+id("themeButton").addEventListener("click", function(){
+	let themes = ["light", "dark", "light"]
+	
+	let names = [
+		"Theme: Light",
+		"Theme: Dark",
+		"Theme: Light"
+	]
+	
+	let index = names.indexOf(id("themeButton").innerHTML)
+	index++
+	index = themes.indexOf(themes[index])
+	
+	id("themeButton").innerHTML = names[index]
+	
+	let theme = themes[names.indexOf(id("themeButton").innerHTML)]
+	
+	setTheme(theme)
 })
 
-id("logoutAccount").addEventListener("click", auth.signOut)
-
-document.addEventListener("mousemove", event => {
-	if (id("flashlight") === null) return
-	id("flashlight").style.left = event.pageX + "px";
-	id("flashlight").style.top = event.pageY + "px";
+id("saveButton").addEventListener("click", function(){
+	let themes = ["light", "dark", "light"]
+	
+	let names = [
+		"Theme: Light",
+		"Theme: Dark",
+		"Theme: Light"
+	]
+	
+	let theme = themes[names.indexOf(id("themeButton").innerHTML)]
+	
+	settings.child(auth.getUid()).child("theme").set(theme)
 })
-
-setInterval(() => {
-	if (id("username").value.length !== 0) id("saveButton").style = ''
-	else id("saveButton").style = `
-		background-color: #e59393;
-		border-color: #b86565;
-		color: #240000;
-		box-shadow: #b86565 0 0.15rem;
-		transform: translateY(0rem);
-		cursor: not-allowed;`
-}, 50)
 
 }()
