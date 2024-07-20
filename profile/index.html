@@ -6,52 +6,112 @@
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
 		<style>
 			* {
-				font-size: min(6vw, 6vh);
+				font-size: min(5vw, 5vh);
 				font-family: sans-serif;
 				color: #00241B;
 			}
 			
+			:root {
+				--background-color: #B5FFE1;
+				--primary-color: #93E5AB;
+				--secondary-color: #65B891;
+				--text-color: #00241B;
+				--inset-color: #B5FFE1;
+				--select-color: #B5FFE1;
+			}
+			
 			::selection {
-				background-color: #00241B;
-				color: #B5FFE1;
+				background-color: var(--text-color);
+				color: var(--select-color);
 			}
 			
 			body {
 				transition-duration: 0.2s;
-				background-color: #B5FFE1;
+				background-color: var(--background-color);
 				margin: 0;
 				overflow: hidden;
 			}
 			
-			button {
-				transition-duration: 0.2s;
-				background-color: #93E5AB;
-				border: 0.1rem solid #65B891;
-				border-radius: 0.2rem;
-				color: #00241B;
-				box-shadow: #65B891 0 0.15rem;
-				cursor: pointer;
-			}
-			
-			button:hover {
-				transform: translateY(0.15rem);
-				background-color: #65B891;
-				color: #B5FFE1;
-				box-shadow: #65B891 0 0;
-			}
-			
 			input {
-				background-color: #93E5AB;
-				border: 0.1rem solid #65B891;
+				background-color: var(--primary-color);
+				border: 0.1rem solid var(--secondary-color);
 				border-radius: 0.2rem;
 				margin: 0.1rem;
 				padding: 0.1rem;
 				text-align: center;
 			}
 			
+			span, input {
+				color: var(--text-color);
+			}
+			
+			.button {
+				transition-duration: 0.2s;
+				background-color: var(--primary-color);
+				border: 0.1rem solid var(--secondary-color);
+				border-radius: 0.2rem;
+				color: var(--text-color);
+				box-shadow: var(--secondary-color) 0 0.15rem;
+				cursor: pointer;
+			}
+			
+			.button:hover, .pressed {
+				transform: translateY(0.15rem);
+				background-color: var(--secondary-color);
+				color: var(--inset-color);
+				box-shadow: var(--secondary-color) 0 0;
+			}
+			
+			.pressed {
+				cursor: not-allowed;
+			}
+			
+			.float {
+				padding: 0.1rem;
+				width: 1rem;
+				height: 1rem;
+				margin-left: 0.1rem;
+				float: left;
+			}
+			
+			#loading {
+				position: absolute;
+				width: min(45vw, 45vh);
+				height: min(10vw, 10vh);
+				text-align: center;
+				transform: translate(calc(50vw - min(20vw, 20vh)), calc(50vh - min(5vw, 5vh)));
+				z-index: 9;
+			}
+			
+			#loading > div {
+				width: min(10vw, 10vh);
+				height: min(10vw, 10vh);
+				background-color: black;
+				border-radius: 100%;
+				float: left;
+				margin-right: min(5vw, 5vh);
+				opacity: 0.25;
+				animation-name: loading;
+				animation-duration: 3s;
+				animation-iteration-count: infinite;
+			}
+			
+			#loading > div:nth-child(2) {
+				animation-delay: 0.4s;
+			}
+			
+			#loading > div:nth-child(3) {
+				animation-delay: 0.8s;
+			}
+			
+			#top {
+				height: 1.2rem;
+				padding: 0.2rem;
+			}
+			
 			#email {
-				background-color: #93E5AB;
-				border: 0.2rem solid #93E5AB;
+				background-color: var(--primary-color);
+				border: 0.2rem solid var(--primary-color);
 				border-radius: 0.2rem;
 			}
 			
@@ -60,24 +120,51 @@
 				margin-right: 1rem;
 			}
 			
-			#options, #profilebuttons {
+			#options, #profile_buttons {
 				text-align: center;
+			}
+			
+			@keyframes loading {
+				0% {
+					transform: translateY(0)
+				}
+				
+				10% {
+					transform: translateY(-10vh)
+				}
+				
+				20% {
+					transform: translateY(0)
+				}
+				
+				100% {
+					transform: translateY(0)
+				}
 			}
 		</style>
 		<title>KG25 Messages!</title>
 		<script defer src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
 		<script defer src="script.js"></script>
 	</head>
-	<body style="filter:blur(8px);pointer-events:none">
-		<div id="options">
-			<input id="username" placeholder="Username"></input><div style="height:0.4rem"></div>
-			<span id="email">???</span><br><br>
-			<button id="themeButton">Theme: Light</button><br><br>
+	<body>
+		<div id="loading">
+			<div></div>
+			<div></div>
+			<div></div>
 		</div>
-		<div id="profilebuttons">
-			<button id="saveButton">Save Changes</button>
+		<div id="top">
+			<img id="messages_button" class="button float" src="https://cdn-icons-png.flaticon.com/512/3115/3115518.png"></img>
+			<img class="button float pressed" src="https://cdn-icons-png.flaticon.com/512/64/64572.png"></img>
+			<img id="settings_button" class="button float" src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png">
+		</div>
+		<div style="filter:blur(8px);pointer-events:none;cursor:progress" id="options">
+			<input id="username" placeholder="Username" value="Loading..." disabled=""></input><div style="height:0.4rem"></div>
+			<span id="email">Loading...</span><br><br>
+		</div>
+		<div style="filter:blur(8px);pointer-events:none;cursor:progress" id="profile_buttons">
+			<button id="saveButton" class="button">Save Changes</button>
 			<span id="split"></span>
-			<button id="logoutAccount">Log out</button>
+			<button id="logoutAccount" class="button">Log out</button>
 		</div>
 	</body>
 </html>

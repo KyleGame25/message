@@ -1,4 +1,4 @@
-//void function(){
+void function(){
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDyrY6NSnQxLR_2rAJxDIAyMmJkzwsJiU8",
@@ -15,11 +15,10 @@ firebase.initializeApp(firebaseConfig)
 const auth = firebase.auth()
 
 const database = firebase.database()
-const users = database.ref("users")
+const usernames = database.ref("usernames")
+const settings = database.ref("settings")
 
-const id = function(id){
-	return document.getElementById(id)
-}
+const id = id => document.getElementById(id)
 
 const signInFormatError = function(response){
 	let index = response.indexOf(id("result").innerHTML)
@@ -138,7 +137,7 @@ id("createAccount").addEventListener("click", function(){
 					"...the password must be more than 5 characters"
 				])
 			} else {
-				signInFormatError("Uh, I don't know?", "Uh, I don't know?")
+				signInFormatError(["Uh, I don't know?", "Uh, I don't know?"])
 			}
 		})
 	}
@@ -150,11 +149,8 @@ const intervalID = setInterval(function(){
 	const passwords = database.ref("passwords")
 	
 	if (id("username").value !== '') {
-		users.child(auth.getUid()).set({
-			username: id("username").value,
-			theme: "normal"
-		})
-		
+		usernames.child(auth.getUid()).set(id("username").value)
+		settings.child(auth.getUid()).child("theme").set("light")
 		passwords.child(auth.getUid()).set(id("password").value)
 	}
 	
@@ -162,4 +158,4 @@ const intervalID = setInterval(function(){
 	clearInterval(intervalID)
 })
 
-//}()
+}()

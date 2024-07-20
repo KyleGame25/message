@@ -8,7 +8,7 @@
 			* {
 				font-size: min(5vw, 5vh);
 				font-family: sans-serif;
-				color: var(--text-color);
+				color: #00241B;
 			}
 			
 			:root {
@@ -25,17 +25,15 @@
 				color: var(--select-color);
 			}
 			
-			html {
-				width: 100%;
-				height: 100%;
-			}
-			
 			body {
 				transition-duration: 0.2s;
 				background-color: var(--background-color);
 				margin: 0;
-				width: 100%;
-				height: 98%;
+				overflow: hidden;
+			}
+			
+			span, input {
+				color: var(--text-color);
 			}
 			
 			.button {
@@ -65,37 +63,6 @@
 				height: 1rem;
 				margin-left: 0.1rem;
 				float: left;
-			}
-			
-			.messageSeperatorDay {
-				font-weight: bold;
-				font-size: 1.5rem;
-				margin-top: 1.5rem;
-				margin-bottom: 0.5rem;
-				text-align: center;
-			}
-			
-			.messageWall {
-				margin-bottom: 0.5rem;
-			}
-			
-			.message {
-				padding: 0.1rem;
-			}
-			
-			.message:hover {
-				background-color: rgba(0, 0, 0, 0.05);
-			}
-			
-			.username {
-				font-size: 1.1rem;
-				font-weight: bold;
-				float: left;
-			}
-			
-			.date {
-				font-size: 0.7rem;
-				transform: translate(0.5rem, 0.2rem);
 			}
 			
 			#loading {
@@ -129,35 +96,17 @@
 			}
 			
 			#top {
-				position: absolute;
-				top: 0;
-				bottom: calc(100vh - 2rem);
+				height: 1.2rem;
 				padding: 0.2rem;
 			}
 			
-			#message_input {
-				background-color: var(--background-color);
-				border: 0.1rem solid var(--secondary-color);
-				border-radius: 0.2rem;
-				margin: 0.1rem;
-				padding: 0.1rem;
-				width: calc(100vw - 3.6rem);
-				float: left;
-				resize: none;
+			#split {
+				margin-left: 1rem;
+				margin-right: 1rem;
 			}
 			
-			#message_box {
-				position: absolute;
-				bottom: 0
-			}
-			
-			#messages {
-				position: absolute;
-				left: 0.2rem;
-				right: 0.2rem;
-				top: 2rem;
-				overflow-y: scroll;
-				overflow-x: hidden;
+			#settings {
+				text-align: center;
 			}
 			
 			@keyframes loading {
@@ -189,15 +138,13 @@
 			<div></div>
 		</div>
 		<div id="top">
-			<img class="button float pressed" src="https://cdn-icons-png.flaticon.com/512/3115/3115518.png"></img>
+			<img id="messages_button" class="button float" src="https://cdn-icons-png.flaticon.com/512/3115/3115518.png"></img>
 			<img id="profile_button" class="button float" src="https://cdn-icons-png.flaticon.com/512/64/64572.png"></img>
-			<img id="settings_button" class="button float" src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png">
+			<img class="button float pressed" src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png">
 		</div>
-		<div id="messages" style="filter:blur(8px);pointer-events:none;cursor:progress"></div>
-		<div id="message_box" style="filter:blur(8px);pointer-events:none;cursor:progress">
-			<textarea id="message_input" maxlength="200"></textarea>
-			<img id="image_send" class="button float" src="https://cdn-icons-png.flaticon.com/512/16/16410.png"></img>
-			<img id="message_send" class="button float" src="https://cdn-icons-png.flaticon.com/512/9333/9333991.png"></img>
+		<div style="filter:blur(8px);pointer-events:none;cursor:progress" id="settings">
+			<button id="themeButton" class="button">Theme: Light</button><br><br>
+			<button id="saveButton" class="button">Save Changes</button>
 		</div>
 	</body>
 </html>
